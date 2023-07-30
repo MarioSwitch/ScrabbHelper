@@ -1,10 +1,15 @@
 package fr.marioswitch.scrabble
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.RadioButton
+import android.widget.Toast
 import fr.marioswitch.scrabble.databinding.ActivityMainBinding
-import org.intellij.lang.annotations.RegExp
+import java.io.BufferedReader
+import java.io.FileReader
+import java.io.IOException
+import java.io.InputStreamReader
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -14,13 +19,28 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        fun listAllMatches(regexp: Regex): Array<String>{
-            //TODO
-            return arrayOf("Test", regexp.toString(), "Test2")
-        }
-        fun countAllMatches(regexp: Regex): Int{
-            //TODO
-            return regexp.toString().length
+        //TODO: ability to choose which dictionary to use
+        val dictionarySelected = "ods8.txt"
+
+        fun listAllMatches(regexp: Regex, dictionary: String, context: Context): ArrayList<String> {
+            val matchingWords = ArrayList<String>()
+
+            try {
+                context.assets.open(dictionary).use { inputStream ->
+                    BufferedReader(InputStreamReader(inputStream)).use { reader ->
+                        var line: String?
+                        while (reader.readLine().also { line = it } != null) {
+                            val matchResult = regexp.find(line!!)
+                            if (matchResult != null) {
+                                matchingWords.add(line!!)
+                            }
+                        }
+                    }
+                }
+            } catch (e: IOException) {
+                Toast.makeText(this, e.toString(),Toast.LENGTH_LONG).show()
+            }
+            return matchingWords
         }
 
         binding.searchButton.setOnClickListener{
@@ -28,20 +48,20 @@ class MainActivity : AppCompatActivity() {
             val mode = binding.searchModeSelect.checkedRadioButtonId
             val modeText = findViewById<RadioButton>(mode).text
             when(modeText){
-                getString(R.string.search_mode_validity) -> {
+                getString(R.string.search_mode_word) -> {
                     //Validity
-                    if(countAllMatches("^$search$".toRegex())>0){
+                    if(listAllMatches("^$search$".toRegex(RegexOption.IGNORE_CASE), dictionarySelected, this).size>0){
                         binding.resultTitle.text = getString(R.string.result_title_valid, search)
                     }else{
                         binding.resultTitle.text = getString(R.string.result_title_invalid, search)
                     }
                     binding.resultContent.text = ""
                 }
-                getString(R.string.search_mode_starting) -> {
+                getString(R.string.search_mode_list) -> {
                     //Words starting with
-                    val wordCount = countAllMatches("^$search".toRegex())
-                    val wordList = listAllMatches("^$search".toRegex())
-                    binding.resultTitle.text = getString(R.string.result_title_starting, wordCount, search)
+                    val wordList = listAllMatches("$search".toRegex(RegexOption.IGNORE_CASE), dictionarySelected, this)
+                    val wordCount = wordList.size
+                    binding.resultTitle.text = getString(R.string.result_title_list, wordCount, search)
                     binding.resultContent.text = wordList.toString()
                 }
             }

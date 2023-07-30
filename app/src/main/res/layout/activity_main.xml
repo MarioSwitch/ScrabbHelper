@@ -20,33 +20,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@+id/search_mode_text"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="horizontal">
 
         <RadioButton
-            android:id="@+id/search_mode_validity"
+            android:id="@+id/search_mode_word"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/search_mode_validity"/>
+            android:text="@string/search_mode_word"/>
         <RadioButton
-            android:id="@+id/search_mode_starting"
+            android:id="@+id/search_mode_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/search_mode_starting"/>
-        <RadioButton
-            android:id="@+id/search_mode_ending"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/search_mode_ending"/>
-        <RadioButton
-            android:id="@+id/search_mode_containing"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/search_mode_containing"/>
-        <RadioButton
-            android:id="@+id/search_mode_custom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/search_mode_custom"/>
+            android:text="@string/search_mode_list"/>
+
     </RadioGroup>
 
     <EditText

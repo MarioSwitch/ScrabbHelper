@@ -1,17 +1,11 @@
 <resources>
     <string name="app_name">Scrabble</string>
     <string name="search_mode_text">Mode:</string>
-    <string name="search_mode_validity">Validity</string>
-    <string name="search_mode_starting">Words starting with…</string>
-    <string name="search_mode_ending">Words ending with…</string>
-    <string name="search_mode_containing">Words containing…</string>
-    <string name="search_mode_custom">Custom search (RegExp)</string>
-    <string name="search_placeholder">Type letter(s) or word…</string>
+    <string name="search_mode_word">Validity of a word</string>
+    <string name="search_mode_list">Word List</string>
+    <string name="search_placeholder">Type letter(s), word or RegExp…</string>
     <string name="search_button">Search</string>
     <string name="result_title_valid">\"%1$s\" is a valid word.</string>
     <string name="result_title_invalid">\"%1$s\" is NOT a valid word.</string>
-    <string name="result_title_starting">List of all %1$d words starting with \"%2$s\"</string>
-    <string name="result_title_ending">List of all %1$d words ending with \"%2$s\"</string>
-    <string name="result_title_containing">List of all %1$d words containing \"%2$s\"</string>
-    <string name="result_title_custom">List of all %1$d words matching \"%2$s\"</string>
+    <string name="result_title_list">%1$d words found with filter: %2$s</string>
 </resources>
