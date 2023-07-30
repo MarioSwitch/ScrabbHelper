@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">ScrabbHelper</string>
+    <string name="search_mode_word">Validité</string>
+    <string name="search_mode_list">Filtre (expr. rég.)</string>
+    <string name="search_mode_anagrams">Anagrammes</string>
+    <string name="search_placeholder">Saisissez…</string>
+    <string name="search_button">Rechercher</string>
+    <string name="result_title_valid">Le mot \"%1$s\" est valide.</string>
+    <string name="result_title_invalid">Le mot \"%1$s\" n\'est PAS valide.</string>
+    <string name="result_title_list">%1$d mots correspondent au filtre : %2$s</string>
+    <string name="result_title_anagrams">%1$d anagrammes trouvés avec les lettres : %2$s</string>
+</resources>

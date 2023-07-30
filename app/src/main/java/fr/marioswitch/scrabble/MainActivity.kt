@@ -18,26 +18,34 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        //TODO: ability to choose which dictionary to use
-        val dictionarySelected = "ods8.txt"
-
-        fun listAllMatches(regexp: Regex, dictionary: String, context: Context): ArrayList<String> {
-            val matchingWords = ArrayList<String>()
-
+        fun convertDictionaryToArrayList(dictionary: String, context: Context): ArrayList<String>{
+            val array = ArrayList<String>()
             try {
                 context.assets.open(dictionary).use { inputStream ->
                     BufferedReader(InputStreamReader(inputStream)).use { reader ->
                         var line: String?
                         while (reader.readLine().also { line = it } != null) {
-                            val matchResult = regexp.find(line!!)
-                            if (matchResult != null) {
-                                matchingWords.add(line!!)
-                            }
+                            array.add(line!!)
                         }
                     }
                 }
             } catch (e: IOException) {
                 Toast.makeText(this, e.toString(),Toast.LENGTH_LONG).show()
+            }
+            return array
+        }
+
+        //TODO: ability to choose which dictionary to use
+        val dictionarySelectedFile = "ods8.txt"
+        val dictionarySelected = convertDictionaryToArrayList(dictionarySelectedFile, this@MainActivity)
+
+        fun listAllMatches(regexp: Regex, dictionary: ArrayList<String>): ArrayList<String> {
+            val matchingWords = ArrayList<String>()
+            for(word in dictionary){
+                val matchResult = regexp.find(word)
+                if (matchResult != null) {
+                    matchingWords.add(word)
+                }
             }
             return matchingWords
         }
@@ -48,7 +56,7 @@ class MainActivity : AppCompatActivity() {
             when(findViewById<RadioButton>(mode).text){
                 getString(R.string.search_mode_word) -> {
                     //Validity
-                    if(listAllMatches("^$search$".toRegex(RegexOption.IGNORE_CASE), dictionarySelected, this).size>0){
+                    if(listAllMatches("^$search$".toRegex(RegexOption.IGNORE_CASE), dictionarySelected).size>0){
                         binding.resultTitle.text = getString(R.string.result_title_valid, search)
                     }else{
                         binding.resultTitle.text = getString(R.string.result_title_invalid, search)
@@ -57,7 +65,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 getString(R.string.search_mode_list) -> {
                     //Regex filter
-                    val wordList = listAllMatches("$search".toRegex(RegexOption.IGNORE_CASE), dictionarySelected, this)
+                    val wordList = listAllMatches("$search".toRegex(RegexOption.IGNORE_CASE), dictionarySelected)
                     val wordCount = wordList.size
                     binding.resultTitle.text = getString(R.string.result_title_list, wordCount, search)
                     binding.resultContent.text = wordList.toString()
@@ -74,7 +82,7 @@ class MainActivity : AppCompatActivity() {
                         regex += "$letter"
                     }
                     regex += "]*$"
-                    val wordList = listAllMatches(regex.toRegex(RegexOption.IGNORE_CASE), dictionarySelected, this)
+                    val wordList = listAllMatches(regex.toRegex(RegexOption.IGNORE_CASE), dictionarySelected)
                     val wordCount = wordList.size
                     binding.resultTitle.text = getString(R.string.result_title_anagrams, wordCount, search)
                     binding.resultContent.text = wordList.toString()
