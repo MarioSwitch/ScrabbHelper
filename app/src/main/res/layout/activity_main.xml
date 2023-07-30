@@ -6,20 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/search_mode_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/search_mode_text"
-        app:layout_constraintBottom_toBottomOf="@+id/search_mode_select"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <RadioGroup
         android:id="@+id/search_mode_select"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@+id/search_mode_text"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:orientation="horizontal">
 
@@ -27,19 +18,27 @@
             android:id="@+id/search_mode_word"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/radio_margin"
             android:text="@string/search_mode_word"/>
         <RadioButton
             android:id="@+id/search_mode_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/radio_margin"
             android:text="@string/search_mode_list"/>
-
+        <RadioButton
+            android:id="@+id/search_mode_anagrams"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/radio_margin"
+            android:text="@string/search_mode_anagrams"/>
     </RadioGroup>
 
     <EditText
         android:id="@+id/search_input"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginStart="@dimen/default_margin"
         android:hint="@string/search_placeholder"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/search_mode_select" />
@@ -48,24 +47,38 @@
         android:id="@+id/search_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/default_margin"
         android:text="@string/search_button"
+        app:layout_constraintBottom_toBottomOf="@+id/search_input"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/search_input" />
 
     <TextView
         android:id="@+id/result_title"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="@dimen/margin_result_title"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_input" />
+        app:layout_constraintTop_toBottomOf="@+id/search_input"
+        android:theme="@style/result_title" />
 
-    <TextView
-        android:id="@+id/result_content"
-        android:layout_width="wrap_content"
+    <ScrollView
+        android:id="@+id/result_scroll"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="@dimen/margin_result_content"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/result_title" />
+        app:layout_constraintTop_toBottomOf="@+id/result_title"
+        android:scrollbars="vertical"
+        android:fillViewport="true">
+        <TextView
+            android:id="@+id/result_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,7 +7,6 @@ import android.widget.RadioButton
 import android.widget.Toast
 import fr.marioswitch.scrabble.databinding.ActivityMainBinding
 import java.io.BufferedReader
-import java.io.FileReader
 import java.io.IOException
 import java.io.InputStreamReader
 
@@ -46,8 +45,7 @@ class MainActivity : AppCompatActivity() {
         binding.searchButton.setOnClickListener{
             val search = binding.searchInput.text
             val mode = binding.searchModeSelect.checkedRadioButtonId
-            val modeText = findViewById<RadioButton>(mode).text
-            when(modeText){
+            when(findViewById<RadioButton>(mode).text){
                 getString(R.string.search_mode_word) -> {
                     //Validity
                     if(listAllMatches("^$search$".toRegex(RegexOption.IGNORE_CASE), dictionarySelected, this).size>0){
@@ -58,10 +56,27 @@ class MainActivity : AppCompatActivity() {
                     binding.resultContent.text = ""
                 }
                 getString(R.string.search_mode_list) -> {
-                    //Words starting with
+                    //Regex filter
                     val wordList = listAllMatches("$search".toRegex(RegexOption.IGNORE_CASE), dictionarySelected, this)
                     val wordCount = wordList.size
                     binding.resultTitle.text = getString(R.string.result_title_list, wordCount, search)
+                    binding.resultContent.text = wordList.toString()
+                }
+                getString(R.string.search_mode_anagrams) -> {
+                    //Anagrams
+                    //TODO: this code doesn't take into account words with 2+ same letters
+                    var regex = "^"
+                    for(letter in search){
+                        regex += "(?!.*$letter.*$letter)"
+                    }
+                    regex += "["
+                    for(letter in search){
+                        regex += "$letter"
+                    }
+                    regex += "]*$"
+                    val wordList = listAllMatches(regex.toRegex(RegexOption.IGNORE_CASE), dictionarySelected, this)
+                    val wordCount = wordList.size
+                    binding.resultTitle.text = getString(R.string.result_title_anagrams, wordCount, search)
                     binding.resultContent.text = wordList.toString()
                 }
             }
