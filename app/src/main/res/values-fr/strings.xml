@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">ScrabbHelper</string>
+    <string name="dictionary">Dictionnaire sélectionné : %1$s (%2$d mots)</string>
     <string name="search_mode_word">Validité</string>
     <string name="search_mode_list">Filtre (expr. rég.)</string>
     <string name="search_mode_anagrams">Anagrammes</string>

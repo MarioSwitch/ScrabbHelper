@@ -36,8 +36,17 @@ class MainActivity : AppCompatActivity() {
         }
 
         //TODO: ability to choose which dictionary to use
-        val dictionarySelectedFile = "ods8.txt"
-        val dictionarySelected = convertDictionaryToArrayList(dictionarySelectedFile, this@MainActivity)
+        val dictionariesFiles = ArrayList<String>()
+        val dictionariesNames = ArrayList<String>()
+        dictionariesFiles.add("ods8.txt")
+        dictionariesNames.add("ODS8")
+        val dictionarySelected = 0
+        val dictionarySelectedFile = dictionariesFiles.elementAt(dictionarySelected)
+        val dictionarySelectedName = dictionariesNames.elementAt(dictionarySelected)
+        val dictionarySelectedArray = convertDictionaryToArrayList(dictionarySelectedFile, this@MainActivity)
+        val totalWords = dictionarySelectedArray.size
+
+        binding.dictionary.text = getString(R.string.dictionary, dictionarySelectedName, totalWords)
 
         fun listAllMatches(regexp: Regex, dictionary: ArrayList<String>): ArrayList<String> {
             val matchingWords = ArrayList<String>()
@@ -56,7 +65,7 @@ class MainActivity : AppCompatActivity() {
             when(findViewById<RadioButton>(mode).text){
                 getString(R.string.search_mode_word) -> {
                     //Validity
-                    if(listAllMatches("^$search$".toRegex(RegexOption.IGNORE_CASE), dictionarySelected).size>0){
+                    if(listAllMatches("^$search$".toRegex(RegexOption.IGNORE_CASE), dictionarySelectedArray).size>0){
                         binding.resultTitle.text = getString(R.string.result_title_valid, search)
                     }else{
                         binding.resultTitle.text = getString(R.string.result_title_invalid, search)
@@ -65,24 +74,21 @@ class MainActivity : AppCompatActivity() {
                 }
                 getString(R.string.search_mode_list) -> {
                     //Regex filter
-                    val wordList = listAllMatches("$search".toRegex(RegexOption.IGNORE_CASE), dictionarySelected)
+                    val wordList = listAllMatches("$search".toRegex(RegexOption.IGNORE_CASE), dictionarySelectedArray)
                     val wordCount = wordList.size
                     binding.resultTitle.text = getString(R.string.result_title_list, wordCount, search)
                     binding.resultContent.text = wordList.toString()
                 }
                 getString(R.string.search_mode_anagrams) -> {
                     //Anagrams
-                    //TODO: this code doesn't take into account words with 2+ same letters
-                    var regex = "^"
-                    for(letter in search){
-                        regex += "(?!.*$letter.*$letter)"
-                    }
-                    regex += "["
+                    //TODO: filter wordList to check if words are actually anagrams
+                    val searchSize = search.length
+                    var regex = "^["
                     for(letter in search){
                         regex += "$letter"
                     }
-                    regex += "]*$"
-                    val wordList = listAllMatches(regex.toRegex(RegexOption.IGNORE_CASE), dictionarySelected)
+                    regex += "]{0,$searchSize}$"
+                    val wordList = listAllMatches(regex.toRegex(RegexOption.IGNORE_CASE), dictionarySelectedArray)
                     val wordCount = wordList.size
                     binding.resultTitle.text = getString(R.string.result_title_anagrams, wordCount, search)
                     binding.resultContent.text = wordList.toString()
