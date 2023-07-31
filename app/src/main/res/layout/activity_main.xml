@@ -51,7 +51,9 @@
         android:layout_marginStart="@dimen/default_margin"
         android:hint="@string/search_placeholder"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_mode_select" />
+        app:layout_constraintTop_toBottomOf="@+id/search_mode_select"
+        android:autofillHints=""
+        android:inputType="text" />
 
     <Button
         android:id="@+id/search_button"
@@ -59,6 +61,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/default_margin"
         android:text="@string/search_button"
+        android:backgroundTint="@color/green_scrabble_3"
         app:layout_constraintBottom_toBottomOf="@+id/search_input"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/search_input" />
@@ -77,7 +80,7 @@
     <ScrollView
         android:id="@+id/result_scroll"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="500dp"
         android:layout_marginTop="@dimen/margin_result_content"
         android:layout_marginStart="@dimen/default_margin"
         android:layout_marginEnd="@dimen/default_margin"

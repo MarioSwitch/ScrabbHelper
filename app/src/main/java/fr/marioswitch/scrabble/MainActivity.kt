@@ -39,7 +39,11 @@ class MainActivity : AppCompatActivity() {
         val dictionariesFiles = ArrayList<String>()
         val dictionariesNames = ArrayList<String>()
         dictionariesFiles.add("ods8.txt")
-        dictionariesNames.add("ODS8")
+        dictionariesNames.add("\uD83C\uDDEB\uD83C\uDDF7 ODS 8")
+        dictionariesFiles.add("csw19.txt")
+        dictionariesNames.add("\uD83C\uDDEC\uD83C\uDDE7 CSW19")
+        dictionariesFiles.add("nwl2020.txt")
+        dictionariesNames.add("\uD83C\uDDFA\uD83C\uDDF8 NWL2020")
         val dictionarySelected = 0
         val dictionarySelectedFile = dictionariesFiles.elementAt(dictionarySelected)
         val dictionarySelectedName = dictionariesNames.elementAt(dictionarySelected)
@@ -83,7 +87,8 @@ class MainActivity : AppCompatActivity() {
                     //Anagrams
                     //TODO: filter wordList to check if words are actually anagrams
                     val searchSize = search.length
-                    var regex = "^["
+                    var regex = ""
+                    regex += "^["
                     for(letter in search){
                         regex += "$letter"
                     }
