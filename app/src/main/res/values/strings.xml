@@ -6,6 +6,8 @@
     <string name="search_mode_anagrams">Anagrams</string>
     <string name="search_placeholder">Type letter(s), word or RegExp…</string>
     <string name="search_button">Search</string>
+    <string name="error_search">Search value contains an error.</string>
+    <string name="error_mode">Please select a mode.</string>
     <string name="result_title_valid">\"%1$s\" is a valid word.</string>
     <string name="result_title_invalid">\"%1$s\" is NOT a valid word.</string>
     <string name="result_title_list">%1$d words match the filter: %2$s</string>

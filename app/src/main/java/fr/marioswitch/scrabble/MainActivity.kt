@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         val dictionariesFiles = ArrayList<String>()
         val dictionariesNames = ArrayList<String>()
         dictionariesFiles.add("ods8.txt")
-        dictionariesNames.add("\uD83C\uDDEB\uD83C\uDDF7 ODS 8")
+        dictionariesNames.add("\uD83C\uDDEB\uD83C\uDDF7 Unofficial dictionary (2021)")
         dictionariesFiles.add("csw19.txt")
         dictionariesNames.add("\uD83C\uDDEC\uD83C\uDDE7 CSW19")
         dictionariesFiles.add("nwl2020.txt")
@@ -66,7 +66,28 @@ class MainActivity : AppCompatActivity() {
         binding.searchButton.setOnClickListener{
             val search = binding.searchInput.text
             val mode = binding.searchModeSelect.checkedRadioButtonId
-            when(findViewById<RadioButton>(mode).text){
+            var modeText = try {
+                findViewById<RadioButton>(mode).text as String
+            }catch (e: Exception){
+                "error_mode"
+            }
+            if(search.isEmpty()){
+                modeText = "error_search"
+            }
+            try {
+                search.toString().toRegex()
+            }catch (e: Exception){
+                modeText = "error_search"
+            }
+            when(modeText){
+                "error_mode" -> {
+                    binding.resultTitle.text = getString(R.string.error_mode)
+                    binding.resultContent.text = ""
+                }
+                "error_search" -> {
+                    binding.resultTitle.text = getString(R.string.error_search)
+                    binding.resultContent.text = ""
+                }
                 getString(R.string.search_mode_word) -> {
                     //Validity
                     if(listAllMatches("^$search$".toRegex(RegexOption.IGNORE_CASE), dictionarySelectedArray).size>0){
