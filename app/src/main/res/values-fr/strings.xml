@@ -6,6 +6,7 @@
     <string name="search_mode_anagrams">Anagrammes</string>
     <string name="search_placeholder">Saisissez…</string>
     <string name="search_button">Rechercher</string>
+    <string name="search_clear">Effacer la recherche</string>
     <string name="error_search">La valeur saisie comporte une erreur.</string>
     <string name="error_mode">Veuillez sélectionner un mode.</string>
     <string name="result_title_valid">Le mot \"%1$s\" est valide.</string>

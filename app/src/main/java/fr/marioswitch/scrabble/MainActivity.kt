@@ -18,6 +18,10 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
+        binding.searchClear.setOnClickListener {
+            binding.searchInput.text.clear()
+        }
+
         fun convertDictionaryToArrayList(dictionary: String, context: Context): ArrayList<String>{
             val array = ArrayList<String>()
             try {
@@ -39,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         val dictionariesFiles = ArrayList<String>()
         val dictionariesNames = ArrayList<String>()
         dictionariesFiles.add("ods8.txt")
-        dictionariesNames.add("\uD83C\uDDEB\uD83C\uDDF7 Unofficial dictionary (2021)")
+        dictionariesNames.add("\uD83C\uDDEB\uD83C\uDDF7 ODS8")
         dictionariesFiles.add("csw19.txt")
         dictionariesNames.add("\uD83C\uDDEC\uD83C\uDDE7 CSW19")
         dictionariesFiles.add("nwl2020.txt")
