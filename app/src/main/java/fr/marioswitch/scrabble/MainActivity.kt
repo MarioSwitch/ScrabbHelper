@@ -18,10 +18,17 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        binding.searchClear.setOnClickListener {
-            binding.searchInput.text.clear()
+        //Returns index of element if is found in array, -1 otherwise
+        fun indexOfChar(array: ArrayList<Char>, element: Char): Int{
+            var i = 0
+            for(char in array){
+                if(char == element){ return i }
+                else{ i++ }
+            }
+            return -1
         }
 
+        //Converts dictionary file to ArrayList<String>
         fun convertDictionaryToArrayList(dictionary: String, context: Context): ArrayList<String>{
             val array = ArrayList<String>()
             try {
@@ -39,23 +46,7 @@ class MainActivity : AppCompatActivity() {
             return array
         }
 
-        //TODO: ability to choose which dictionary to use
-        val dictionariesFiles = ArrayList<String>()
-        val dictionariesNames = ArrayList<String>()
-        dictionariesFiles.add("ods8.txt")
-        dictionariesNames.add("\uD83C\uDDEB\uD83C\uDDF7 ODS8")
-        dictionariesFiles.add("csw19.txt")
-        dictionariesNames.add("\uD83C\uDDEC\uD83C\uDDE7 CSW19")
-        dictionariesFiles.add("nwl2020.txt")
-        dictionariesNames.add("\uD83C\uDDFA\uD83C\uDDF8 NWL2020")
-        val dictionarySelected = 0
-        val dictionarySelectedFile = dictionariesFiles.elementAt(dictionarySelected)
-        val dictionarySelectedName = dictionariesNames.elementAt(dictionarySelected)
-        val dictionarySelectedArray = convertDictionaryToArrayList(dictionarySelectedFile, this@MainActivity)
-        val totalWords = dictionarySelectedArray.size
-
-        binding.dictionary.text = getString(R.string.dictionary, dictionarySelectedName, totalWords)
-
+        //Lists all strings from dictionary matching regexp
         fun listAllMatches(regexp: Regex, dictionary: ArrayList<String>): ArrayList<String> {
             val matchingWords = ArrayList<String>()
             for(word in dictionary){
@@ -67,7 +58,36 @@ class MainActivity : AppCompatActivity() {
             return matchingWords
         }
 
-        binding.searchButton.setOnClickListener{
+        //Dictionaries
+        val dictionariesFiles = ArrayList<String>()
+        val dictionariesNames = ArrayList<String>()
+        dictionariesFiles.add("ods8.txt")
+        dictionariesNames.add("\uD83C\uDDEB\uD83C\uDDF7 ODS8")
+        dictionariesFiles.add("csw19.txt")
+        dictionariesNames.add("\uD83C\uDDEC\uD83C\uDDE7 CSW19")
+        dictionariesFiles.add("nwl2020.txt")
+        dictionariesNames.add("\uD83C\uDDFA\uD83C\uDDF8 NWL2020")
+        var dictionarySelected = 0
+        var dictionarySelectedFile = dictionariesFiles.elementAt(dictionarySelected)
+        var dictionarySelectedName = dictionariesNames.elementAt(dictionarySelected)
+        var dictionarySelectedArray = convertDictionaryToArrayList(dictionarySelectedFile, this@MainActivity)
+        var totalWords = dictionarySelectedArray.size
+        binding.dictionary.text = getString(R.string.dictionary, dictionarySelectedName, totalWords)
+
+        binding.dictionaryChange.setOnClickListener {
+            dictionarySelected = (dictionarySelected+1)%(dictionariesFiles.size)
+            dictionarySelectedFile = dictionariesFiles.elementAt(dictionarySelected)
+            dictionarySelectedName = dictionariesNames.elementAt(dictionarySelected)
+            dictionarySelectedArray = convertDictionaryToArrayList(dictionarySelectedFile, this@MainActivity)
+            totalWords = dictionarySelectedArray.size
+            binding.dictionary.text = getString(R.string.dictionary, dictionarySelectedName, totalWords)
+        }
+
+        binding.searchClear.setOnClickListener {
+            binding.searchInput.text.clear()
+        }
+
+        binding.searchButton.setOnClickListener {
             val search = binding.searchInput.text
             val mode = binding.searchModeSelect.checkedRadioButtonId
             var modeText = try {
@@ -106,11 +126,10 @@ class MainActivity : AppCompatActivity() {
                     val wordList = listAllMatches("$search".toRegex(RegexOption.IGNORE_CASE), dictionarySelectedArray)
                     val wordCount = wordList.size
                     binding.resultTitle.text = getString(R.string.result_title_list, wordCount, search)
-                    binding.resultContent.text = wordList.toString()
+                    binding.resultContent.text = wordList.joinToString(", ")
                 }
                 getString(R.string.search_mode_anagrams) -> {
                     //Anagrams
-                    //TODO: filter wordList to check if words are actually anagrams
                     val searchSize = search.length
                     var regex = ""
                     regex += "^["
@@ -118,10 +137,36 @@ class MainActivity : AppCompatActivity() {
                         regex += "$letter"
                     }
                     regex += "]{0,$searchSize}$"
-                    val wordList = listAllMatches(regex.toRegex(RegexOption.IGNORE_CASE), dictionarySelectedArray)
+                    val filteredList = listAllMatches(regex.toRegex(RegexOption.IGNORE_CASE), dictionarySelectedArray)
+                    val searchUpper = search.toString().uppercase()
+                    val uniqueLetters = ArrayList<Char>()
+                    val uniqueSearch = ArrayList<Int>()
+                    val uniqueWord = ArrayList<Int>()
+                    for(letter in searchUpper){
+                        val index = indexOfChar(uniqueLetters, letter)
+                        if(index >= 0){
+                            uniqueSearch[index]++
+                        }else{
+                            uniqueLetters.add(letter)
+                            uniqueSearch.add(1)
+                        }
+                    }
+                    val wordList = ArrayList<String>()
+                    var addWord:Boolean
+                    for(word in filteredList){
+                        addWord = true
+                        uniqueWord.clear()
+                        for(char in uniqueLetters){
+                            uniqueWord.add(word.count{it == char})
+                        }
+                        for(i in 0 until uniqueLetters.size){
+                            if(uniqueWord[i] > uniqueSearch[i]){ addWord = false }
+                        }
+                        if(addWord){ wordList.add(word) }
+                    }
                     val wordCount = wordList.size
                     binding.resultTitle.text = getString(R.string.result_title_anagrams, wordCount, search)
-                    binding.resultContent.text = wordList.toString()
+                    binding.resultContent.text = wordList.joinToString(", ")
                 }
             }
         }
