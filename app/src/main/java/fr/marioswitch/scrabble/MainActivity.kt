@@ -130,15 +130,25 @@ class MainActivity : AppCompatActivity() {
                 }
                 getString(R.string.search_mode_anagrams) -> {
                     //Anagrams
-                    val searchSize = search.length
-                    var regex = ""
-                    regex += "^["
+                    val blanks = search.count{it == '.'}
+                    var searchNoBlanks = ""
                     for(letter in search){
-                        regex += "$letter"
+                        if(letter != '.'){ searchNoBlanks += letter }
                     }
-                    regex += "]{0,$searchSize}$"
+                    var regexPart = "["
+                    for(letter in search){
+                        if(letter != '.'){ regexPart += "$letter" }
+                    }
+                    regexPart += "]*"
+                    var regex = "^"
+                    regex += regexPart
+                    for(i in 1..blanks){
+                        regex += "."
+                        regex += regexPart
+                    }
+                    regex += "$"
                     val filteredList = listAllMatches(regex.toRegex(RegexOption.IGNORE_CASE), dictionarySelectedArray)
-                    val searchUpper = search.toString().uppercase()
+                    val searchUpper = searchNoBlanks.uppercase()
                     val uniqueLetters = ArrayList<Char>()
                     val uniqueSearch = ArrayList<Int>()
                     val uniqueWord = ArrayList<Int>()
@@ -151,22 +161,40 @@ class MainActivity : AppCompatActivity() {
                             uniqueSearch.add(1)
                         }
                     }
+                    uniqueLetters.add('.')
+                    uniqueSearch.add(blanks)
                     val wordList = ArrayList<String>()
                     var addWord:Boolean
                     for(word in filteredList){
                         addWord = true
+                        if(word.length > search.length){ addWord = false }
                         uniqueWord.clear()
                         for(char in uniqueLetters){
                             uniqueWord.add(word.count{it == char})
                         }
-                        for(i in 0 until uniqueLetters.size){
-                            if(uniqueWord[i] > uniqueSearch[i]){ addWord = false }
+                        var blanksInWord = word.length - uniqueWord.sum()
+                        for(i in 0 until uniqueLetters.size-1){
+                            while(uniqueWord[i] > uniqueSearch[i]){
+                                uniqueWord[i]--
+                                blanksInWord++
+                            }
                         }
+                        if(blanksInWord > uniqueSearch[uniqueSearch.size-1]){ addWord = false }
                         if(addWord){ wordList.add(word) }
                     }
                     val wordCount = wordList.size
                     binding.resultTitle.text = getString(R.string.result_title_anagrams, wordCount, search)
-                    binding.resultContent.text = wordList.joinToString(", ")
+                    var resultText = ""
+                    for(i in search.length downTo 2){
+                        val wordListLetter = listAllMatches("^.{$i}$".toRegex(RegexOption.IGNORE_CASE), wordList)
+                        if(wordListLetter.size > 0){
+                            resultText += getString(R.string.result_content_anagrams, i, wordListLetter.size)
+                            resultText += "\n"
+                            resultText += wordListLetter.joinToString(", ")
+                            resultText += "\n\n"
+                        }
+                    }
+                    binding.resultContent.text = resultText
                 }
             }
         }

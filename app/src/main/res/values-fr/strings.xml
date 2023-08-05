@@ -14,4 +14,5 @@
     <string name="result_title_invalid">Le mot \"%1$s\" n\'est PAS valide.</string>
     <string name="result_title_list">%1$d mots correspondent au filtre : %2$s</string>
     <string name="result_title_anagrams">%1$d anagrammes trouvés avec les lettres : %2$s</string>
+    <string name="result_content_anagrams">Mots de %1$d lettres (%2$d) :</string>
 </resources>

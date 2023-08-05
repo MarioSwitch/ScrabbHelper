@@ -14,4 +14,5 @@
     <string name="result_title_invalid">\"%1$s\" is NOT a valid word.</string>
     <string name="result_title_list">%1$d words match the filter: %2$s</string>
     <string name="result_title_anagrams">%1$d anagrams found with letters: %2$s</string>
+    <string name="result_content_anagrams">%1$d-letter words (%2$d):</string>
 </resources>
