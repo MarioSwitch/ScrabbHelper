@@ -14,17 +14,16 @@
         android:layout_marginStart="@dimen/default_margin"
         android:layout_marginEnd="@dimen/default_margin"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="@string/dictionary" />
 
-    <ImageView
-        android:id="@+id/dictionary_change"
+    <Spinner
+        android:id="@+id/dictionary_spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/change"
-        app:layout_constraintTop_toTopOf="@id/dictionary"
         app:layout_constraintBottom_toBottomOf="@id/dictionary"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:contentDescription="@string/dictionary_change" />
+        app:layout_constraintStart_toEndOf="@id/dictionary"
+        app:layout_constraintTop_toTopOf="@id/dictionary" />
 
     <RadioGroup
         android:id="@+id/search_mode_select"
@@ -63,7 +62,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/search_mode_select"
         android:autofillHints=""
-        android:inputType="text" />
+        android:inputType="textVisiblePassword" />
 
     <Button
         android:id="@+id/search_button"

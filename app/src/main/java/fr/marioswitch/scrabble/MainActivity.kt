@@ -1,10 +1,13 @@
 package fr.marioswitch.scrabble
 
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.RadioButton
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import fr.marioswitch.scrabble.databinding.ActivityMainBinding
 import java.io.BufferedReader
 import java.io.IOException
@@ -12,6 +15,8 @@ import java.io.InputStreamReader
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var dictionarySelectedFile: String
+    private lateinit var dictionarySelectedArray: ArrayList<String>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -59,30 +64,25 @@ class MainActivity : AppCompatActivity() {
         }
 
         //Dictionaries
-        val dictionariesFiles = ArrayList<String>()
-        val dictionariesNames = ArrayList<String>()
-        dictionariesFiles.add("ods8.txt")
-        dictionariesNames.add("\uD83C\uDDEB\uD83C\uDDF7 ODS8")
-        dictionariesFiles.add("csw19.txt")
-        dictionariesNames.add("\uD83C\uDDEC\uD83C\uDDE7 CSW19")
-        dictionariesFiles.add("nwl2020.txt")
-        dictionariesNames.add("\uD83C\uDDFA\uD83C\uDDF8 NWL2020")
-        var dictionarySelected = 0
-        var dictionarySelectedFile = dictionariesFiles.elementAt(dictionarySelected)
-        var dictionarySelectedName = dictionariesNames.elementAt(dictionarySelected)
-        var dictionarySelectedArray = convertDictionaryToArrayList(dictionarySelectedFile, this@MainActivity)
-        var totalWords = dictionarySelectedArray.size
-        binding.dictionary.text = getString(R.string.dictionary, dictionarySelectedName, totalWords)
-
-        binding.dictionaryChange.setOnClickListener {
-            dictionarySelected = (dictionarySelected+1)%(dictionariesFiles.size)
-            dictionarySelectedFile = dictionariesFiles.elementAt(dictionarySelected)
-            dictionarySelectedName = dictionariesNames.elementAt(dictionarySelected)
-            dictionarySelectedArray = convertDictionaryToArrayList(dictionarySelectedFile, this@MainActivity)
-            totalWords = dictionarySelectedArray.size
-            binding.dictionary.text = getString(R.string.dictionary, dictionarySelectedName, totalWords)
+        val dictionarySpinner = binding.dictionarySpinner
+        ArrayAdapter.createFromResource(this, R.array.dictionary_list, android.R.layout.simple_spinner_item).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            dictionarySpinner.adapter = adapter
+        }
+        dictionarySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                dictionarySelectedFile = when (position) {
+                    0 -> "ods8.txt"
+                    1 -> "csw19.txt"
+                    2 -> "nwl2020.txt"
+                    else -> "ods8.txt"
+                }
+                dictionarySelectedArray = convertDictionaryToArrayList(dictionarySelectedFile, this@MainActivity)
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
+        //Rest of the code
         binding.searchClear.setOnClickListener {
             binding.searchInput.text.clear()
         }
