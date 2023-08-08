@@ -25,6 +25,14 @@
         app:layout_constraintStart_toEndOf="@id/dictionary"
         app:layout_constraintTop_toTopOf="@id/dictionary" />
 
+    <TextView
+        android:id="@+id/dictionary_words"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/dictionary"
+        app:layout_constraintStart_toEndOf="@id/dictionary_spinner"
+        app:layout_constraintTop_toTopOf="@id/dictionary" />
+
     <RadioGroup
         android:id="@+id/search_mode_select"
         android:layout_width="wrap_content"
@@ -83,7 +91,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/search_button"
         app:layout_constraintStart_toEndOf="@+id/search_input"
         app:layout_constraintTop_toTopOf="@+id/search_button"
-        android:contentDescription="@string/search_clear" />
+        android:contentDescription="@string/search_clear"
+        android:theme="@style/icon" />
 
     <TextView
         android:id="@+id/result_title"

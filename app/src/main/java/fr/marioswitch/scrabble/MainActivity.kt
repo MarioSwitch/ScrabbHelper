@@ -78,6 +78,7 @@ class MainActivity : AppCompatActivity() {
                     else -> "ods8.txt"
                 }
                 dictionarySelectedArray = convertDictionaryToArrayList(dictionarySelectedFile, this@MainActivity)
+                binding.dictionaryWords.text = getString(R.string.dictionary_words, dictionarySelectedArray.size)
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }

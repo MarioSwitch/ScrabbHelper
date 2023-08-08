@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Theme.Scrabble" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
@@ -14,5 +14,8 @@
     </style>
     <style name="result_content">
         <item name="android:textSize">10sp</item>
+    </style>
+    <style name="icon">
+        <item name="tint">@color/black</item>
     </style>
 </resources>

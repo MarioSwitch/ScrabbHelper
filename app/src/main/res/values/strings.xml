@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">ScrabbHelper</string>
-    <string name="dictionary">Selected dictionary:</string>
+    <string name="dictionary">Dictionary:</string>
+    <string name="dictionary_words">(%1$d words)</string>
     <string name="search_mode_word">Validity</string>
-    <string name="search_mode_list">Filter (RegExp)</string>
+    <string name="search_mode_list">Filter (RegEx)</string>
     <string name="search_mode_anagrams">Anagrams</string>
     <string name="search_placeholder">Type letter(s), word or RegExp…</string>
     <string name="search_button">Search</string>
