@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">ScrabbHelper</string>
     <string name="dictionary">Dictionary:</string>
-    <string name="dictionary_words">(%1$d words)</string>
+    <string name="dictionary_words">(%1$s words)</string>
+    <string name="thousand_separator">,</string>
     <string name="search_mode_word">Validity</string>
     <string name="search_mode_list">Filter (RegEx)</string>
     <string name="search_mode_anagrams">Anagrams</string>
@@ -12,7 +13,7 @@
     <string name="error_mode">Please select a mode.</string>
     <string name="result_title_valid">\"%1$s\" is a valid word.</string>
     <string name="result_title_invalid">\"%1$s\" is NOT a valid word.</string>
-    <string name="result_title_list">%1$d words match the filter: %2$s</string>
-    <string name="result_title_anagrams">%1$d anagrams found with letters: %2$s</string>
-    <string name="result_content_anagrams">%1$d-letter words (%2$d):</string>
+    <string name="result_title_list">%1$s words match the filter: %2$s</string>
+    <string name="result_title_anagrams">%1$s anagrams found with letters: %2$s</string>
+    <string name="result_content_anagrams">%1$d-letter words (%2$s):</string>
 </resources>

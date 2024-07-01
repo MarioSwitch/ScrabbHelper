@@ -12,6 +12,7 @@ import fr.marioswitch.scrabble.databinding.ActivityMainBinding
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
+import java.text.DecimalFormat
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -31,6 +32,13 @@ class MainActivity : AppCompatActivity() {
                 else{ i++ }
             }
             return -1
+        }
+
+        //Applies thousand separators
+        fun applyThousandSeparator(value:Int):String{
+            val formatter = DecimalFormat("#,##0")
+            formatter.decimalFormatSymbols = formatter.decimalFormatSymbols.apply { groupingSeparator = this@MainActivity.getString(R.string.thousand_separator).toCharArray()[0] }
+            return formatter.format(value)
         }
 
         //Converts dictionary file to ArrayList<String>
@@ -78,7 +86,8 @@ class MainActivity : AppCompatActivity() {
                     else -> "ods8.txt"
                 }
                 dictionarySelectedArray = convertDictionaryToArrayList(dictionarySelectedFile, this@MainActivity)
-                binding.dictionaryWords.text = getString(R.string.dictionary_words, dictionarySelectedArray.size)
+                val dictionarySelectedSize = applyThousandSeparator(dictionarySelectedArray.size)
+                binding.dictionaryWords.text = getString(R.string.dictionary_words, dictionarySelectedSize)
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
@@ -125,7 +134,7 @@ class MainActivity : AppCompatActivity() {
                 getString(R.string.search_mode_list) -> {
                     //Regex filter
                     val wordList = listAllMatches("$search".toRegex(RegexOption.IGNORE_CASE), dictionarySelectedArray)
-                    val wordCount = wordList.size
+                    val wordCount = applyThousandSeparator(wordList.size)
                     binding.resultTitle.text = getString(R.string.result_title_list, wordCount, search)
                     binding.resultContent.text = wordList.joinToString(", ")
                 }
@@ -183,13 +192,13 @@ class MainActivity : AppCompatActivity() {
                         if(blanksInWord > uniqueSearch[uniqueSearch.size-1]){ addWord = false }
                         if(addWord){ wordList.add(word) }
                     }
-                    val wordCount = wordList.size
+                    val wordCount = applyThousandSeparator(wordList.size)
                     binding.resultTitle.text = getString(R.string.result_title_anagrams, wordCount, search)
                     var resultText = ""
                     for(i in search.length downTo 2){
                         val wordListLetter = listAllMatches("^.{$i}$".toRegex(RegexOption.IGNORE_CASE), wordList)
                         if(wordListLetter.size > 0){
-                            resultText += getString(R.string.result_content_anagrams, i, wordListLetter.size)
+                            resultText += getString(R.string.result_content_anagrams, i, applyThousandSeparator(wordListLetter.size))
                             resultText += "\n"
                             resultText += wordListLetter.joinToString(", ")
                             resultText += "\n\n"
