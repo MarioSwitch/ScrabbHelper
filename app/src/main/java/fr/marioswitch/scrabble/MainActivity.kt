@@ -129,8 +129,10 @@ class MainActivity : AppCompatActivity() {
                 getString(R.string.search_mode_word) -> {
                     //Validity
                     if(listAllMatches("^$search$".toRegex(RegexOption.IGNORE_CASE), dictionarySelectedArray).size>0){
+                        binding.resultTitle.setTextAppearance(R.style.result_title_green)
                         binding.resultTitle.text = getString(R.string.result_title_valid, search)
                     }else{
+                        binding.resultTitle.setTextAppearance(R.style.result_title_red)
                         binding.resultTitle.text = getString(R.string.result_title_invalid, search)
                     }
                     binding.resultContent.text = ""
@@ -139,6 +141,7 @@ class MainActivity : AppCompatActivity() {
                     //Regex filter
                     val wordList = listAllMatches("$search".toRegex(RegexOption.IGNORE_CASE), dictionarySelectedArray)
                     val wordCount = applyThousandSeparator(wordList.size)
+                    binding.resultTitle.setTextAppearance(R.style.result_title)
                     binding.resultTitle.text = getString(R.string.result_title_list, wordCount, search)
                     binding.resultContent.text = wordList.joinToString(", ")
                 }
@@ -197,6 +200,7 @@ class MainActivity : AppCompatActivity() {
                         if(addWord){ wordList.add(word) }
                     }
                     val wordCount = applyThousandSeparator(wordList.size)
+                    binding.resultTitle.setTextAppearance(R.style.result_title)
                     binding.resultTitle.text = getString(R.string.result_title_anagrams, wordCount, search)
                     var resultText = ""
                     for(i in search.length downTo 2){

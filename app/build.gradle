@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId "fr.marioswitch.scrabble"
-        minSdk 21
+        minSdk 23
         targetSdk 34
         versionCode 6
         versionName "1.1.0"

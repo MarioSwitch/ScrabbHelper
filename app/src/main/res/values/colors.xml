@@ -2,6 +2,8 @@
 <resources>
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
+    <color name="red_day">#FF0000</color>
+    <color name="red_night">#CC0000</color>
     <color name="green_scrabble_1">#2bb159</color>
     <color name="green_scrabble_2">#228b46</color>
     <color name="green_scrabble_3">#196533</color>

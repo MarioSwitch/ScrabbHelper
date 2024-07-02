@@ -12,6 +12,12 @@
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/black</item>
     </style>
+    <style name="result_title_red">
+        <item name="android:textColor">@color/red_day</item>
+    </style>
+    <style name="result_title_green">
+        <item name="android:textColor">@color/green_scrabble_1</item>
+    </style>
     <style name="result_content">
         <item name="android:textSize">10sp</item>
     </style>
