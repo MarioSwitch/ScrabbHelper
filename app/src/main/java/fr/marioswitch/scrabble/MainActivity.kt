@@ -80,10 +80,14 @@ class MainActivity : AppCompatActivity() {
         dictionarySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 dictionarySelectedFile = when (position) {
-                    0 -> "ods8.txt"
-                    1 -> "csw19.txt"
-                    2 -> "nwl2020.txt"
-                    else -> "ods8.txt"
+                    0 -> "ods9.txt"
+                    1 -> "ods8.txt"
+                    2 -> "ods8_extended.txt"
+                    3 -> "csw21.txt"
+                    4 -> "csw19.txt"
+                    5 -> "nwl2023.txt"
+                    6 -> "nwl2020.txt"
+                    else -> "ods9.txt"
                 }
                 dictionarySelectedArray = convertDictionaryToArrayList(dictionarySelectedFile, this@MainActivity)
                 val dictionarySelectedSize = applyThousandSeparator(dictionarySelectedArray.size)

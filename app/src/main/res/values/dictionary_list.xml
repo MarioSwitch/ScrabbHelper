@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="dictionary_list">
-        <item>🇫🇷 ODS 8</item>
-        <item>🇬🇧 CSW 19</item>
-        <item>🇺🇸 NWL 2020</item>
+        <item>🇫🇷 ODS9</item>
+        <item>🇫🇷 ODS8</item>
+        <item>🇫🇷 ODS8 extended</item>
+        <item>🇬🇧 CSW21/22</item>
+        <item>🇬🇧 CSW19</item>
+        <item>🇺🇸 NWL2023</item>
+        <item>🇺🇸 NWL2020</item>
     </string-array>
 </resources>
