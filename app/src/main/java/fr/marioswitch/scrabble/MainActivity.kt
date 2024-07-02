@@ -97,6 +97,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         //Rest of the code
+        val maxResults = 10000
+
         binding.searchClear.setOnClickListener {
             binding.searchInput.text.clear()
         }
@@ -143,7 +145,12 @@ class MainActivity : AppCompatActivity() {
                     val wordCount = applyThousandSeparator(wordList.size)
                     binding.resultTitle.setTextAppearance(R.style.result_title)
                     binding.resultTitle.text = getString(R.string.result_title_list, wordCount, search)
-                    binding.resultContent.text = wordList.joinToString(", ")
+                    if(wordList.size<=maxResults){
+                        binding.resultContent.text = wordList.joinToString(", ")
+                    }
+                    else{
+                        binding.resultContent.text = getString(R.string.too_many_results, applyThousandSeparator(maxResults))
+                    }
                 }
                 getString(R.string.search_mode_anagrams) -> {
                     //Anagrams
@@ -202,17 +209,22 @@ class MainActivity : AppCompatActivity() {
                     val wordCount = applyThousandSeparator(wordList.size)
                     binding.resultTitle.setTextAppearance(R.style.result_title)
                     binding.resultTitle.text = getString(R.string.result_title_anagrams, wordCount, search)
-                    var resultText = ""
-                    for(i in search.length downTo 2){
-                        val wordListLetter = listAllMatches("^.{$i}$".toRegex(RegexOption.IGNORE_CASE), wordList)
-                        if(wordListLetter.size > 0){
-                            resultText += getString(R.string.result_content_anagrams, i, applyThousandSeparator(wordListLetter.size))
-                            resultText += "\n"
-                            resultText += wordListLetter.joinToString(", ")
-                            resultText += "\n\n"
+                    if(wordList.size<=maxResults){
+                        var resultText = ""
+                        for(i in search.length downTo 2){
+                            val wordListLetter = listAllMatches("^.{$i}$".toRegex(RegexOption.IGNORE_CASE), wordList)
+                            if(wordListLetter.size > 0){
+                                resultText += getString(R.string.result_content_anagrams, i, applyThousandSeparator(wordListLetter.size))
+                                resultText += "\n"
+                                resultText += wordListLetter.joinToString(", ")
+                                resultText += "\n\n"
+                            }
                         }
+                        binding.resultContent.text = resultText
                     }
-                    binding.resultContent.text = resultText
+                    else{
+                        binding.resultContent.text = getString(R.string.too_many_results, applyThousandSeparator(maxResults))
+                    }
                 }
             }
         }

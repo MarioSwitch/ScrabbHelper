@@ -16,4 +16,5 @@
     <string name="result_title_list">%1$s mots correspondent au filtre : %2$s</string>
     <string name="result_title_anagrams">%1$s anagrammes trouvés avec les lettres : %2$s</string>
     <string name="result_content_anagrams">Mots de %1$d lettres (%2$s) :</string>
+    <string name="too_many_results">Les résultats détaillés ne sont pas affichés au-delà de %1$s correspondances.</string>
 </resources>
