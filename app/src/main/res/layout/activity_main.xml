@@ -108,12 +108,14 @@
     <ScrollView
         android:id="@+id/result_scroll"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:layout_height="0dp"
         android:layout_marginTop="@dimen/margin_result_content"
+        android:layout_marginBottom="@dimen/default_margin"
         android:layout_marginStart="@dimen/default_margin"
         android:layout_marginEnd="@dimen/default_margin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/result_title"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:scrollbars="vertical"
         android:fillViewport="true">
         <TextView
