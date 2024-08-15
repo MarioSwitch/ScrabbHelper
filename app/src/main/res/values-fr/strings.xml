@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">ScrabbHelper</string>
-    <string name="dictionary">Dictionnaire :</string>
+    <string name="dictionary">Dictionnaire :</string>
     <string name="dictionary_words">(%1$s mots)</string>
     <string name="thousand_separator"> </string>
     <string name="search_mode_word">Validité</string>
@@ -13,9 +13,10 @@
     <string name="error_mode">Veuillez sélectionner un mode.</string>
     <string name="result_title_valid">Le mot \"%1$s\" est valide.</string>
     <string name="result_title_invalid">Le mot \"%1$s\" n\'est PAS valide.</string>
-    <string name="result_title_list">%1$s mots correspondent au filtre : %2$s</string>
-    <string name="result_title_anagrams">%1$s anagrammes trouvés avec les lettres : %2$s</string>
-    <string name="result_content_anagrams">Mots de %1$d lettres (%2$s) :</string>
+    <string name="result_title_list">%1$s mots correspondent au filtre : %2$s</string>
+    <string name="result_title_anagrams">%1$s anagrammes trouvés avec les lettres : %2$s</string>
+    <string name="result_content_anagrams">Mots de %1$d lettres (%2$s) :</string>
+    <string name="result_content_anagrams_perfect">Anagrammes parfaits (%1$d lettres) (%2$s) :</string>
     <string name="too_many_results">Pour éviter le gel de l\'application, les résultats détaillés ne sont pas affichés au-delà de %1$s correspondances.</string>
     <string name="too_many_anagrams">Pour éviter le gel de l\'application, les résultats détaillés s\'arrêtent lorsqu\'au moins %1$s anagrammes ont été affichées (%2$s affichées).</string>
 </resources>

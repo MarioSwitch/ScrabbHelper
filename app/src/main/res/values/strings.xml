@@ -16,6 +16,7 @@
     <string name="result_title_list">%1$s words match the filter: %2$s</string>
     <string name="result_title_anagrams">%1$s anagrams found with letters: %2$s</string>
     <string name="result_content_anagrams">%1$d-letter words (%2$s):</string>
+    <string name="result_content_anagrams_perfect">Perfect anagrams (%1$d letters) (%2$s):</string>
     <string name="too_many_results">To avoid freezes, detailed results are not displayed if there are more than %1$s matches.</string>
     <string name="too_many_anagrams">To avoid freezes, detailed results stops when at least %1$s anagrams are displayed (%2$s actually displayed).</string>
 </resources>

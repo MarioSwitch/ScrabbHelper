@@ -24,6 +24,9 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
+        //Initializes save
+        val save = getSharedPreferences("fr.marioswitch.scrabble",Context.MODE_PRIVATE)
+
         //Returns index of element if is found in array, -1 otherwise
         fun indexOfChar(array: ArrayList<Char>, element: Char): Int{
             var i = 0
@@ -92,6 +95,7 @@ class MainActivity : AppCompatActivity() {
                 dictionarySelectedArray = convertDictionaryToArrayList(dictionarySelectedFile, this@MainActivity)
                 val dictionarySelectedSize = applyThousandSeparator(dictionarySelectedArray.size)
                 binding.dictionaryWords.text = getString(R.string.dictionary_words, dictionarySelectedSize)
+                save.edit().putInt("dictionary",position).apply() //Saves dictionary selected
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
@@ -99,6 +103,7 @@ class MainActivity : AppCompatActivity() {
         //Rest of the code
         val maxResults = 10000
         val maxAnagrams = 1000
+        dictionarySpinner.setSelection(save.getInt("dictionary",0)) //Selects dictionary based on user save (or 0 (ODS9) if no save)
 
         binding.searchClear.setOnClickListener {
             binding.searchInput.text.clear()
@@ -222,7 +227,11 @@ class MainActivity : AppCompatActivity() {
                         val wordListLetter = listAllMatches("^.{$i}$".toRegex(RegexOption.IGNORE_CASE), wordList)
                         anagramsDisplayed += wordListLetter.size
                         if(wordListLetter.size > 0){
-                            resultText += getString(R.string.result_content_anagrams, i, applyThousandSeparator(wordListLetter.size))
+                            resultText += if(i == search.length){
+                                getString(R.string.result_content_anagrams_perfect, i, applyThousandSeparator(wordListLetter.size))
+                            }else{
+                                getString(R.string.result_content_anagrams, i, applyThousandSeparator(wordListLetter.size))
+                            }
                             resultText += "\n"
                             resultText += wordListLetter.joinToString(", ")
                             resultText += "\n\n"
