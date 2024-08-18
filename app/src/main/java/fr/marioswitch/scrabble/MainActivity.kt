@@ -2,6 +2,9 @@ package fr.marioswitch.scrabble
 
 import android.content.Context
 import android.os.Bundle
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.style.TypefaceSpan
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -149,8 +152,14 @@ class MainActivity : AppCompatActivity() {
                     //Regex filter
                     val wordList = listAllMatches("$search".toRegex(RegexOption.IGNORE_CASE), dictionarySelectedArray)
                     val wordCount = applyThousandSeparator(wordList.size)
+                    val string1 = getString(R.string.result_title_list, wordCount) + " "
+                    val string2 = "$search"
                     binding.resultTitle.setTextAppearance(R.style.result_title)
-                    binding.resultTitle.text = getString(R.string.result_title_list, wordCount, search)
+                    val spannable = SpannableStringBuilder()
+                    spannable.append(string1)
+                    spannable.append(string2)
+                    spannable.setSpan(TypefaceSpan("monospace"), string1.length, string1.length+string2.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    binding.resultTitle.text = spannable
                     if(wordList.size<=maxResults){
                         binding.resultContent.text = wordList.joinToString(", ")
                     }

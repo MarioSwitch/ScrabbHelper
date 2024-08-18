@@ -6,14 +6,14 @@
     <string name="search_mode_word">Validity</string>
     <string name="search_mode_list">Filter (RegEx)</string>
     <string name="search_mode_anagrams">Anagrams</string>
-    <string name="search_placeholder">Type letter(s), word or RegExp…</string>
+    <string name="search_placeholder">Type letter(s), word or RegEx…</string>
     <string name="search_button">Search</string>
     <string name="search_clear">Clear search</string>
     <string name="error_search">Search value contains an error.</string>
     <string name="error_mode">Please select a mode.</string>
     <string name="result_title_valid">\"%1$s\" is a valid word.</string>
     <string name="result_title_invalid">\"%1$s\" is NOT a valid word.</string>
-    <string name="result_title_list">%1$s words match the filter: %2$s</string>
+    <string name="result_title_list">%1$s words match the filter:</string>
     <string name="result_title_anagrams">%1$s anagrams found with letters: %2$s</string>
     <string name="result_content_anagrams">%1$d-letter words (%2$s):</string>
     <string name="result_content_anagrams_perfect">Perfect anagrams (%1$d letters) (%2$s):</string>
