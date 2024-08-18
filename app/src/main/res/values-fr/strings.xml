@@ -9,8 +9,10 @@
     <string name="search_placeholder">Saisissez…</string>
     <string name="search_button">Rechercher</string>
     <string name="search_clear">Effacer la recherche</string>
-    <string name="error_search">La valeur saisie comporte une erreur.</string>
     <string name="error_mode">Veuillez sélectionner un mode.</string>
+    <string name="error_search">La valeur saisie comporte une erreur.</string>
+    <string name="error_validity">En mode \"Validité\", veuillez utiliser uniquement des lettres.</string>
+    <string name="error_anagrams">En mode \"Anagrammes\", veuillez utiliser uniquement des lettres et des \".\" (jokers).</string>
     <string name="result_title_valid">Le mot \"%1$s\" est valide.</string>
     <string name="result_title_invalid">Le mot \"%1$s\" n\'est PAS valide.</string>
     <string name="result_title_list">%1$s mots correspondent au filtre :</string>

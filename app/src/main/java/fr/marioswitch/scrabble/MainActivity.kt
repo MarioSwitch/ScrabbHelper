@@ -128,14 +128,32 @@ class MainActivity : AppCompatActivity() {
             }catch (e: Exception){
                 modeText = "error_search"
             }
+            if(modeText == getString(R.string.search_mode_word) && !search.matches("^[a-zA-Z]*".toRegex())){
+                modeText = "error_validity"
+            }
+            if(modeText == getString(R.string.search_mode_anagrams) && !search.matches("^[a-zA-Z.]*".toRegex())){
+                modeText = "error_anagrams"
+            }
             when(modeText){
                 "error_mode" -> {
+                    binding.resultTitle.setTextAppearance(R.style.result_title)
                     binding.resultTitle.text = getString(R.string.error_mode)
                     binding.resultContent.text = ""
                 }
                 "error_search" -> {
+                    binding.resultTitle.setTextAppearance(R.style.result_title)
                     binding.resultTitle.text = getString(R.string.error_search)
                     binding.resultContent.text = ""
+                }
+                "error_validity" -> {
+                    binding.resultTitle.setTextAppearance(R.style.result_title)
+                    binding.resultTitle.text = getString(R.string.error_search)
+                    binding.resultContent.text = getString(R.string.error_validity)
+                }
+                "error_anagrams" -> {
+                    binding.resultTitle.setTextAppearance(R.style.result_title)
+                    binding.resultTitle.text = getString(R.string.error_search)
+                    binding.resultContent.text = getString(R.string.error_anagrams)
                 }
                 getString(R.string.search_mode_word) -> {
                     //Validity
@@ -149,7 +167,7 @@ class MainActivity : AppCompatActivity() {
                     binding.resultContent.text = ""
                 }
                 getString(R.string.search_mode_list) -> {
-                    //Regex filter
+                    //RegEx filter
                     val wordList = listAllMatches("$search".toRegex(RegexOption.IGNORE_CASE), dictionarySelectedArray)
                     val wordCount = applyThousandSeparator(wordList.size)
                     val string1 = getString(R.string.result_title_list, wordCount) + " "

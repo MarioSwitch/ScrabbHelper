@@ -9,8 +9,10 @@
     <string name="search_placeholder">Type letter(s), word or RegEx…</string>
     <string name="search_button">Search</string>
     <string name="search_clear">Clear search</string>
-    <string name="error_search">Search value contains an error.</string>
     <string name="error_mode">Please select a mode.</string>
+    <string name="error_search">Search value contains an error.</string>
+    <string name="error_validity">In \"Validity\" mode, please only use letters.</string>
+    <string name="error_anagrams">In \"Anagrams\" mode, please only use letters and \".\" (blanks).</string>
     <string name="result_title_valid">\"%1$s\" is a valid word.</string>
     <string name="result_title_invalid">\"%1$s\" is NOT a valid word.</string>
     <string name="result_title_list">%1$s words match the filter:</string>
