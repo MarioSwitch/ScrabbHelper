@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.edit
 import fr.marioswitch.scrabble.databinding.ActivityMainBinding
 import java.io.BufferedReader
 import java.io.IOException
@@ -27,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         //Initializes save
-        val save = getSharedPreferences("fr.marioswitch.scrabble",Context.MODE_PRIVATE)
+        val save = getSharedPreferences("fr.marioswitch.scrabble", MODE_PRIVATE)
 
         //Returns index of element if is found in array, -1 otherwise
         fun indexOfChar(array: ArrayList<Char>, element: Char): Int{
@@ -97,7 +98,7 @@ class MainActivity : AppCompatActivity() {
                 dictionarySelectedArray = convertDictionaryToArrayList(dictionarySelectedFile, this@MainActivity)
                 val dictionarySelectedSize = applyThousandSeparator(dictionarySelectedArray.size)
                 binding.dictionaryWords.text = getString(R.string.dictionary_words, dictionarySelectedSize)
-                save.edit().putInt("dictionary",position).apply() //Saves dictionary selected
+                save.edit { putInt("dictionary", position) } //Saves dictionary selected
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
@@ -116,7 +117,7 @@ class MainActivity : AppCompatActivity() {
             val mode = binding.searchModeSelect.checkedRadioButtonId
             var modeText = try {
                 findViewById<RadioButton>(mode).text as String
-            }catch (e: Exception){
+            }catch (_: Exception){
                 "error_mode"
             }
             if(search.isEmpty()){
@@ -124,7 +125,7 @@ class MainActivity : AppCompatActivity() {
             }
             try {
                 search.toString().toRegex()
-            }catch (e: Exception){
+            }catch (_: Exception){
                 modeText = "error_search"
             }
             if(modeText == getString(R.string.search_mode_word) && !search.matches("^[a-zA-Z]*".toRegex())){
@@ -156,7 +157,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 getString(R.string.search_mode_word) -> {
                     //Validity
-                    if(listAllMatches("^$search$".toRegex(RegexOption.IGNORE_CASE), dictionarySelectedArray).size>0){
+                    if(listAllMatches("^$search$".toRegex(RegexOption.IGNORE_CASE), dictionarySelectedArray).isNotEmpty()){
                         binding.resultTitle.setTextAppearance(R.style.result_title_green)
                         binding.resultTitle.text = getString(R.string.result_title_valid, search)
                     }else{
@@ -204,7 +205,7 @@ class MainActivity : AppCompatActivity() {
                         regexPart += "]*"
                         regex = "^"
                         regex += regexPart
-                        for(i in 1..blanks){
+                        repeat(blanks){
                             regex += "."
                             regex += regexPart
                         }
@@ -252,7 +253,7 @@ class MainActivity : AppCompatActivity() {
                     for(i in search.length downTo 2){
                         val wordListLetter = listAllMatches("^.{$i}$".toRegex(RegexOption.IGNORE_CASE), wordList)
                         anagramsDisplayed += wordListLetter.size
-                        if(wordListLetter.size > 0){
+                        if(wordListLetter.isNotEmpty()){
                             resultText += if(i == search.length){
                                 getString(R.string.result_content_anagrams_perfect, i, applyThousandSeparator(wordListLetter.size))
                             }else{
