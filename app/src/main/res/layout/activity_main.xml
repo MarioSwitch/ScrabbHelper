@@ -9,7 +9,7 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/app_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/default_margin"
@@ -18,16 +18,30 @@
         app:layout_constraintTop_toTopOf="parent"
         android:theme="@style/title"
         android:text="@string/app_name" />
+    <TextView
+        android:id="@+id/app_dev"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/app_name"
+        app:layout_constraintTop_toBottomOf="@id/app_name"
+        android:text="@string/app_dev" />
+    <TextView
+        android:id="@+id/app_ver"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@id/app_name"
+        app:layout_constraintTop_toBottomOf="@id/app_name"
+        android:text="@string/app_ver" />
 
     <TextView
         android:id="@+id/dictionary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/radio_margin"
+        android:layout_marginTop="@dimen/extended_margin"
         android:layout_marginStart="@dimen/default_margin"
         android:layout_marginEnd="@dimen/default_margin"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintTop_toBottomOf="@id/app_dev"
         android:text="@string/dictionary" />
 
     <Spinner
@@ -58,29 +72,30 @@
             android:id="@+id/search_mode_word"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/radio_margin"
+            android:layout_marginEnd="@dimen/extended_margin"
             android:text="@string/search_mode_word"/>
         <RadioButton
             android:id="@+id/search_mode_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/radio_margin"
+            android:layout_marginEnd="@dimen/extended_margin"
             android:text="@string/search_mode_list"/>
         <RadioButton
             android:id="@+id/search_mode_anagrams"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/radio_margin"
+            android:layout_marginEnd="@dimen/extended_margin"
             android:text="@string/search_mode_anagrams"/>
     </RadioGroup>
 
     <EditText
         android:id="@+id/search_input"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginStart="@dimen/default_margin"
         android:hint="@string/search_placeholder"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/search_clear"
         app:layout_constraintTop_toBottomOf="@+id/search_mode_select"
         android:autofillHints=""
         android:inputType="textVisiblePassword" />
@@ -101,8 +116,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/clear"
+        android:layout_marginRight="@dimen/extended_margin"
         app:layout_constraintBottom_toBottomOf="@+id/search_button"
-        app:layout_constraintStart_toEndOf="@+id/search_input"
+        app:layout_constraintEnd_toStartOf="@+id/search_button"
         app:layout_constraintTop_toTopOf="@+id/search_button"
         android:contentDescription="@string/search_clear"
         android:theme="@style/icon" />
