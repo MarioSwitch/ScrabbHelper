@@ -24,8 +24,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+        setContentView(binding.root)
 
         //Initializes save
         val save = getSharedPreferences("fr.marioswitch.scrabble",Context.MODE_PRIVATE)
