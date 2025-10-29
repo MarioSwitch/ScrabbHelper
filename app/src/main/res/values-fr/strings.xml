@@ -8,7 +8,6 @@
     <string name="search_placeholder">Saisissez…</string>
     <string name="search_button">Rechercher</string>
     <string name="search_clear">Effacer la recherche</string>
-    <string name="error_mode">Veuillez sélectionner un mode.</string>
     <string name="error_search">La valeur saisie comporte une erreur.</string>
     <string name="error_validity">En mode \"Validité\", veuillez utiliser uniquement des lettres.</string>
     <string name="error_anagrams">En mode \"Anagrammes\", veuillez utiliser uniquement des lettres et des \".\" (jokers).</string>

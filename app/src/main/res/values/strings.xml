@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name" translatable="false">ScrabbHelper</string>
     <string name="app_dev" translatable="false">Alexis Druon</string>
-    <string name="app_ver" translatable="false">v1.1.5</string>
+    <string name="app_ver" translatable="false">v1.1.6</string>
     <string name="dictionary">Dictionary:</string>
     <string name="dictionary_words">(%1$s words)</string>
     <string name="thousand_separator">,</string>
@@ -11,7 +11,6 @@
     <string name="search_placeholder">Type letter(s), word or RegEx…</string>
     <string name="search_button">Search</string>
     <string name="search_clear">Clear search</string>
-    <string name="error_mode">Please select a mode.</string>
     <string name="error_search">Search value contains an error.</string>
     <string name="error_validity">In \"Validity\" mode, please only use letters.</string>
     <string name="error_anagrams">In \"Anagrams\" mode, please only use letters and \".\" (blanks).</string>

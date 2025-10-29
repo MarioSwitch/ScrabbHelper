@@ -107,19 +107,19 @@ class MainActivity : AppCompatActivity() {
         val maxResults = 10000
         val maxAnagrams = 1000
         dictionarySpinner.setSelection(save.getInt("dictionary",0)) //Selects dictionary based on user save (or 0 (ODS9) if no save)
+        binding.searchModeSelect.check(R.id.search_mode_word) //Selects Validity mode by default
 
         binding.searchClear.setOnClickListener {
             binding.searchInput.text.clear()
+            binding.resultTitle.text = ""
+            binding.resultContent.text = ""
         }
 
         binding.searchButton.setOnClickListener {
             val search = binding.searchInput.text
             val mode = binding.searchModeSelect.checkedRadioButtonId
-            var modeText = try {
-                findViewById<RadioButton>(mode).text as String
-            }catch (_: Exception){
-                "error_mode"
-            }
+            var modeText = findViewById<RadioButton>(mode).text as String
+
             if(search.isEmpty()){
                 modeText = "error_search"
             }
@@ -135,11 +135,6 @@ class MainActivity : AppCompatActivity() {
                 modeText = "error_anagrams"
             }
             when(modeText){
-                "error_mode" -> {
-                    binding.resultTitle.setTextAppearance(R.style.result_title)
-                    binding.resultTitle.text = getString(R.string.error_mode)
-                    binding.resultContent.text = ""
-                }
                 "error_search" -> {
                     binding.resultTitle.setTextAppearance(R.style.result_title)
                     binding.resultTitle.text = getString(R.string.error_search)
