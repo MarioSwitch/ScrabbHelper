@@ -88,7 +88,7 @@ class MainActivity : AppCompatActivity() {
                 dictionarySelectedFile = when (position) {
                     0 -> "ods9.txt"
                     1 -> "ods8.txt"
-                    2 -> "ods8_extended.txt"
+                    2 -> "csw24.txt"
                     3 -> "csw21.txt"
                     4 -> "csw19.txt"
                     5 -> "nwl2023.txt"
