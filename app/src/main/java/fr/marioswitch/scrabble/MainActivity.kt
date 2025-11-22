@@ -22,6 +22,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var dictionarySelectedFile: String
     private lateinit var dictionarySelectedArray: ArrayList<String>
+    private lateinit var definitionsFile: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -65,6 +67,35 @@ class MainActivity : AppCompatActivity() {
             return array
         }
 
+        //Get definitions of a word
+        fun getDefinitions(word: String, definitionsPath: String, context: Context): String {
+            val regex = Regex("\t\"$word\": \"(.*)\",", setOf(RegexOption.MULTILINE, RegexOption.IGNORE_CASE))
+
+            context.assets.open(definitionsPath).bufferedReader().useLines { lines ->
+                for(line in lines) {
+                    val match = regex.find(line)
+                    if(match == null) continue
+
+                    var definition = match.groupValues[1]
+                    if(definition == "") return getString(R.string.result_definitions_error, word)
+                    if(definition.startsWith("ERROR_")) return getString(R.string.result_definitions_error, word)
+
+                    definition = definition.replace("\\n", "\n\n")
+
+                    val credits = when {
+                        "fr" in definitionsPath -> getString(R.string.result_definitions_credits_fr)
+                        "en" in definitionsPath -> getString(R.string.result_definitions_credits_en)
+                        else -> ""
+                    }
+
+                    definition += "\n\n" + credits
+                    return definition
+                }
+            }
+
+            return getString(R.string.result_definitions_not_found, word)
+        }
+
         //Lists all strings from dictionary matching regexp
         fun listAllMatches(regexp: Regex, dictionary: ArrayList<String>): ArrayList<String> {
             val matchingWords = ArrayList<String>()
@@ -99,6 +130,12 @@ class MainActivity : AppCompatActivity() {
                 val dictionarySelectedSize = applyThousandSeparator(dictionarySelectedArray.size)
                 binding.dictionaryWords.text = getString(R.string.dictionary_words, dictionarySelectedSize)
                 save.edit { putInt("dictionary", position) } //Saves dictionary selected
+
+                definitionsFile = when (position) {
+                    in 0..1 -> "definitions_fr.json"
+                    in 2..6 -> "definitions_en.json"
+                    else -> "definitions_fr.json"
+                }
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
@@ -155,11 +192,12 @@ class MainActivity : AppCompatActivity() {
                     if(listAllMatches("^$search$".toRegex(RegexOption.IGNORE_CASE), dictionarySelectedArray).isNotEmpty()){
                         binding.resultTitle.setTextAppearance(R.style.result_title_green)
                         binding.resultTitle.text = getString(R.string.result_title_valid, search)
+                        binding.resultContent.text = getDefinitions(search.toString(), definitionsFile, this@MainActivity)
                     }else{
                         binding.resultTitle.setTextAppearance(R.style.result_title_red)
                         binding.resultTitle.text = getString(R.string.result_title_invalid, search)
+                        binding.resultContent.text = ""
                     }
-                    binding.resultContent.text = ""
                 }
                 getString(R.string.search_mode_list) -> {
                     //RegEx filter

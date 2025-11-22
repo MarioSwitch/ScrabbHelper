@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name" translatable="false">ScrabbHelper</string>
     <string name="app_dev" translatable="false">Alexis Druon</string>
-    <string name="app_ver" translatable="false">v1.2.0</string>
+    <string name="app_ver" translatable="false">v1.3.0-beta1</string>
     <string name="dictionary">Dictionary:</string>
     <string name="dictionary_words">(%1$s words)</string>
     <string name="thousand_separator">,</string>
@@ -20,6 +20,10 @@
     <string name="result_title_anagrams">%1$s anagrams found with letters: %2$s</string>
     <string name="result_content_anagrams">%1$d-letter words (%2$s):</string>
     <string name="result_content_anagrams_perfect">Perfect anagrams (%1$d letters) (%2$s):</string>
+    <string name="result_definitions_credits_en">Definitions dumped from English Wiktionary, under CC BY-SA 4.0 license.</string>
+    <string name="result_definitions_credits_fr">Definitions dumped from French Wiktionary, under CC BY-SA 4.0 license, on 17–21 November 2025.</string>
+    <string name="result_definitions_not_found">\"%1$s\" is not in the definition database.</string>
+    <string name="result_definitions_error">\"%1$s\" has no definition in the database.</string>
     <string name="too_many_results">To avoid freezes, detailed results are not displayed if there are more than %1$s matches.</string>
     <string name="too_many_anagrams">To avoid freezes, detailed results stops when at least %1$s anagrams are displayed (%2$s actually displayed).</string>
 </resources>

@@ -17,6 +17,10 @@
     <string name="result_title_anagrams">%1$s anagrammes trouvées avec les lettres : %2$s</string>
     <string name="result_content_anagrams">Mots de %1$d lettres (%2$s) :</string>
     <string name="result_content_anagrams_perfect">Anagrammes parfaites (%1$d lettres) (%2$s) :</string>
+    <string name="result_definitions_credits_en">Définitions récupérées depuis le Wiktionnaire anglais, sous licence CC BY-SA 4.0.</string>
+    <string name="result_definitions_credits_fr">Définitions récupérées depuis le Wiktionnaire français, sous licence CC BY-SA 4.0, du 17 au 21 novembre 2025.</string>
+    <string name="result_definitions_not_found">\"%1$s\" n\'est pas dans la base de définitions.</string>
+    <string name="result_definitions_error">\"%1$s\" n\'a pas de définition dans la base.</string>
     <string name="too_many_results">Pour éviter le gel de l\'application, les résultats détaillés ne sont pas affichés au-delà de %1$s correspondances.</string>
     <string name="too_many_anagrams">Pour éviter le gel de l\'application, les résultats détaillés s\'arrêtent lorsqu\'au moins %1$s anagrammes ont été affichées (%2$s affichées).</string>
 </resources>
