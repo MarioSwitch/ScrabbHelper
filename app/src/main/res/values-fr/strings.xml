@@ -1,6 +1,8 @@
 <resources>
     <string name="dictionary">Dictionnaire :</string>
     <string name="dictionary_words">(%1$s mots)</string>
+    <string name="loading_title">Chargement…</string>
+    <string name="loading_content">Veuillez patienter pendant que %1$s charge le dictionnaire et les définitions…</string>
     <string name="thousand_separator"> </string>
     <string name="search_mode_word">Validité</string>
     <string name="search_mode_list">Filtre (RegEx)</string>

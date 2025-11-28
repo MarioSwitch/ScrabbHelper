@@ -18,12 +18,14 @@ import java.io.IOException
 import java.io.InputStreamReader
 import java.text.DecimalFormat
 import java.text.Normalizer
+import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var dictionarySelectedFile: String
     private lateinit var dictionarySelectedArray: ArrayList<String>
     private lateinit var definitionsFile: String
+    private lateinit var definitionsMap: Map<String, String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,43 +75,35 @@ class MainActivity : AppCompatActivity() {
 
         //Get definitions of a word
         fun getDefinitions(word: String, definitionsPath: String, context: Context, redirect: Boolean = false): String {
-            context.assets.open(definitionsPath).bufferedReader().useLines { lines ->
-                for(line in lines) {
-                    val match = Regex("\t\"$word\": \"(.*)\"", setOf(RegexOption.MULTILINE, RegexOption.IGNORE_CASE)).find(line)
-                    if(match == null) continue
+            var definition = definitionsMap[word.uppercase()]
+            if(definition == null) return getString(R.string.result_definitions_not_found, word)
+            if(definition == "") return getString(R.string.result_definitions_error, word)
+            if(definition.startsWith("ERROR_")) return getString(R.string.result_definitions_error, word)
 
-                    var definition = match.groupValues[1]
-                    if(definition == "") return getString(R.string.result_definitions_error, word)
-                    if(definition.startsWith("ERROR_")) return getString(R.string.result_definitions_error, word)
+            definition = definition.replace("\\n", "\n\n")
 
-                    definition = definition.replace("\\n", "\n\n")
+            if(redirect) return "\n\n[$word]\n\n$definition"
 
-                    if(redirect) return "\n\n[$word]\n\n$definition"
+            val conjugation = Regex("du verbe[  ]+(.*)\\.").find(definition)
+            if(conjugation != null) definition += getDefinitions(conjugation.groupValues[1].removeAccents(), definitionsPath, context, true)
 
-                    val conjugation = Regex("du verbe[  ]+(.*)\\.").find(definition)
-                    if(conjugation != null) definition += getDefinitions(conjugation.groupValues[1].removeAccents(), definitionsPath, context, true)
+            val feminine = Regex("Féminin de[  ]+([^ .]*)\\.", RegexOption.IGNORE_CASE).find(definition)
+            if(feminine != null) definition += getDefinitions(feminine.groupValues[1].removeAccents(), definitionsPath, context, true)
 
-                    val feminine = Regex("Féminin de[  ]+([^ .]*)\\.", RegexOption.IGNORE_CASE).find(definition)
-                    if(feminine != null) definition += getDefinitions(feminine.groupValues[1].removeAccents(), definitionsPath, context, true)
+            val plural = Regex("Pluriel de[  ]+([^ .]*)\\.", RegexOption.IGNORE_CASE).find(definition)
+            if(plural != null) definition += getDefinitions(plural.groupValues[1].removeAccents(), definitionsPath, context, true)
 
-                    val plural = Regex("Pluriel de[  ]+([^ .]*)\\.", RegexOption.IGNORE_CASE).find(definition)
-                    if(plural != null) definition += getDefinitions(plural.groupValues[1].removeAccents(), definitionsPath, context, true)
+            val variant = Regex("Variante (orthographique )?de[  ]+([^ .]*)\\.", RegexOption.IGNORE_CASE).find(definition)
+            if(variant != null) definition += getDefinitions(variant.groupValues[variant.groupValues.size-1].removeAccents(), definitionsPath, context, true)
 
-                    val variant = Regex("Variante (orthographique )?de[  ]+([^ .]*)\\.", RegexOption.IGNORE_CASE).find(definition)
-                    if(variant != null) definition += getDefinitions(variant.groupValues[variant.groupValues.size-1].removeAccents(), definitionsPath, context, true)
-
-                    val credits = when {
-                        "fr" in definitionsPath -> getString(R.string.result_definitions_credits_fr)
-                        "en" in definitionsPath -> getString(R.string.result_definitions_credits_en)
-                        else -> ""
-                    }
-
-                    definition += "\n\n" + credits
-                    return definition
-                }
+            val credits = when {
+                "fr" in definitionsPath -> getString(R.string.result_definitions_credits_fr)
+                "en" in definitionsPath -> getString(R.string.result_definitions_credits_en)
+                else -> ""
             }
 
-            return getString(R.string.result_definitions_not_found, word)
+            definition += "\n\n" + credits
+            return definition
         }
 
         //Lists all strings from dictionary matching regexp
@@ -142,15 +136,37 @@ class MainActivity : AppCompatActivity() {
                     6 -> "nwl2020.txt"
                     else -> "ods9.txt"
                 }
-                dictionarySelectedArray = convertDictionaryToArrayList(dictionarySelectedFile, this@MainActivity)
-                val dictionarySelectedSize = applyThousandSeparator(dictionarySelectedArray.size)
-                binding.dictionaryWords.text = getString(R.string.dictionary_words, dictionarySelectedSize)
-                save.edit { putInt("dictionary", position) } //Saves dictionary selected
 
-                definitionsFile = when (position) {
-                    in 0..1 -> "definitions_fr.json"
-                    in 2..6 -> "definitions_en.json"
-                    else -> "definitions_fr.json"
+                binding.dictionaryWords.text = ""
+                binding.resultTitle.setTextAppearance(R.style.result_title)
+                binding.resultTitle.text = getString(R.string.loading_title)
+                binding.resultContent.text = getString(R.string.loading_content, getString(R.string.app_name))
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    dictionarySelectedArray = convertDictionaryToArrayList(dictionarySelectedFile, this@MainActivity)
+
+                    definitionsFile = when (position) {
+                        in 0..1 -> "definitions_fr.json"
+                        in 2..6 -> "definitions_en.json"
+                        else -> "definitions_fr.json"
+                    }
+                    val map = HashMap<String, String>(1000000)
+                    this@MainActivity.assets.open(definitionsFile).bufferedReader().useLines { lines ->
+                        for (line in lines) {
+                            val match = Regex("\t\"([^\"]+)\": \"(.*)\"", setOf(RegexOption.MULTILINE, RegexOption.IGNORE_CASE)).find(line)
+                            if(match == null) continue
+                            map[match.groupValues[1]] = match.groupValues[2]
+                        }
+                    }
+                    definitionsMap = map
+
+                    withContext(Dispatchers.Main){
+                        val dictionarySelectedSize = applyThousandSeparator(dictionarySelectedArray.size)
+                        binding.dictionaryWords.text = getString(R.string.dictionary_words, dictionarySelectedSize)
+                        binding.resultTitle.text = ""
+                        binding.resultContent.text = ""
+                        save.edit { putInt("dictionary", position) } //Saves dictionary selected
+                    }
                 }
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
