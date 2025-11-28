@@ -17,6 +17,7 @@ import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
 import java.text.DecimalFormat
+import java.text.Normalizer
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -67,13 +68,14 @@ class MainActivity : AppCompatActivity() {
             return array
         }
 
-        //Get definitions of a word
-        fun getDefinitions(word: String, definitionsPath: String, context: Context): String {
-            val regex = Regex("\t\"$word\": \"(.*)\",", setOf(RegexOption.MULTILINE, RegexOption.IGNORE_CASE))
+        //Remove accents for redirects
+        fun String.removeAccents() = Normalizer.normalize(this, Normalizer.Form.NFD).replace("\\p{M}".toRegex(), "")
 
+        //Get definitions of a word
+        fun getDefinitions(word: String, definitionsPath: String, context: Context, redirect: Boolean = false): String {
             context.assets.open(definitionsPath).bufferedReader().useLines { lines ->
                 for(line in lines) {
-                    val match = regex.find(line)
+                    val match = Regex("\t\"$word\": \"(.*)\"", setOf(RegexOption.MULTILINE, RegexOption.IGNORE_CASE)).find(line)
                     if(match == null) continue
 
                     var definition = match.groupValues[1]
@@ -81,6 +83,20 @@ class MainActivity : AppCompatActivity() {
                     if(definition.startsWith("ERROR_")) return getString(R.string.result_definitions_error, word)
 
                     definition = definition.replace("\\n", "\n\n")
+
+                    if(redirect) return "\n\n[$word]\n\n$definition"
+
+                    val conjugation = Regex("du verbe[  ]+(.*)\\.").find(definition)
+                    if(conjugation != null) definition += getDefinitions(conjugation.groupValues[1].removeAccents(), definitionsPath, context, true)
+
+                    val feminine = Regex("Féminin de[  ]+([^ .]*)\\.", RegexOption.IGNORE_CASE).find(definition)
+                    if(feminine != null) definition += getDefinitions(feminine.groupValues[1].removeAccents(), definitionsPath, context, true)
+
+                    val plural = Regex("Pluriel de[  ]+([^ .]*)\\.", RegexOption.IGNORE_CASE).find(definition)
+                    if(plural != null) definition += getDefinitions(plural.groupValues[1].removeAccents(), definitionsPath, context, true)
+
+                    val variant = Regex("Variante (orthographique )?de[  ]+([^ .]*)\\.", RegexOption.IGNORE_CASE).find(definition)
+                    if(variant != null) definition += getDefinitions(variant.groupValues[variant.groupValues.size-1].removeAccents(), definitionsPath, context, true)
 
                     val credits = when {
                         "fr" in definitionsPath -> getString(R.string.result_definitions_credits_fr)
