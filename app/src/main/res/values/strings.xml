@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name" translatable="false">ScrabbHelper</string>
     <string name="app_dev" translatable="false">Alexis Druon</string>
-    <string name="app_ver" translatable="false">v1.3.0-beta2</string>
+    <string name="app_ver" translatable="false">v1.3.0-beta3</string>
     <string name="dictionary">Dictionary:</string>
     <string name="dictionary_words">(%1$s words)</string>
     <string name="loading_title">Loading…</string>
