@@ -9,13 +9,9 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.RadioButton
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import fr.marioswitch.scrabble.databinding.ActivityMainBinding
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStreamReader
 import java.text.DecimalFormat
 import java.text.Normalizer
 import kotlinx.coroutines.*
@@ -24,6 +20,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var dictionarySelectedFile: String
     private lateinit var dictionarySelectedArray: ArrayList<String>
+    private lateinit var dictionarySelectedSet: HashSet<String>
     private lateinit var definitionsFile: String
     private lateinit var definitionsMap: Map<String, String>
 
@@ -50,24 +47,6 @@ class MainActivity : AppCompatActivity() {
             val formatter = DecimalFormat("#,##0")
             formatter.decimalFormatSymbols = formatter.decimalFormatSymbols.apply { groupingSeparator = this@MainActivity.getString(R.string.thousand_separator).toCharArray()[0] }
             return formatter.format(value)
-        }
-
-        //Converts dictionary file to ArrayList<String>
-        fun convertDictionaryToArrayList(dictionary: String, context: Context): ArrayList<String>{
-            val array = ArrayList<String>()
-            try {
-                context.assets.open(dictionary).use { inputStream ->
-                    BufferedReader(InputStreamReader(inputStream)).use { reader ->
-                        var line: String?
-                        while (reader.readLine().also { line = it } != null) {
-                            array.add(line!!)
-                        }
-                    }
-                }
-            } catch (e: IOException) {
-                Toast.makeText(this, e.toString(),Toast.LENGTH_LONG).show()
-            }
-            return array
         }
 
         //Remove accents for redirects
@@ -143,7 +122,8 @@ class MainActivity : AppCompatActivity() {
                 binding.resultContent.text = getString(R.string.loading_content, getString(R.string.app_name))
 
                 CoroutineScope(Dispatchers.IO).launch {
-                    dictionarySelectedArray = convertDictionaryToArrayList(dictionarySelectedFile, this@MainActivity)
+                    dictionarySelectedArray = ArrayList(this@MainActivity.assets.open(dictionarySelectedFile).bufferedReader().useLines { it.toList() })
+                    dictionarySelectedSet = dictionarySelectedArray.toHashSet()
 
                     definitionsFile = when (position) {
                         in 0..1 -> "definitions_fr.json"
@@ -185,25 +165,24 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.searchButton.setOnClickListener {
-            val search = binding.searchInput.text
-            val mode = binding.searchModeSelect.checkedRadioButtonId
-            var modeText = findViewById<RadioButton>(mode).text as String
+            val search = binding.searchInput.text.toString()
+            var mode = findViewById<RadioButton>(binding.searchModeSelect.checkedRadioButtonId).text.toString()
 
             if(search.isEmpty()){
-                modeText = "error_search"
+                mode = "error_search"
             }
             try {
-                search.toString().toRegex()
+                search.toRegex()
             }catch (_: Exception){
-                modeText = "error_search"
+                mode = "error_search"
             }
-            if(modeText == getString(R.string.search_mode_word) && !search.matches("^[a-zA-Z]*".toRegex())){
-                modeText = "error_validity"
+            if(mode == getString(R.string.search_mode_word) && !search.matches("^[a-zA-Z]*".toRegex())){
+                mode = "error_validity"
             }
-            if(modeText == getString(R.string.search_mode_anagrams) && !search.matches("^[a-zA-Z.]*".toRegex())){
-                modeText = "error_anagrams"
+            if(mode == getString(R.string.search_mode_anagrams) && !search.matches("^[a-zA-Z.]*".toRegex())){
+                mode = "error_anagrams"
             }
-            when(modeText){
+            when(mode){
                 "error_search" -> {
                     binding.resultTitle.setTextAppearance(R.style.result_title)
                     binding.resultTitle.text = getString(R.string.error_search)
@@ -221,10 +200,10 @@ class MainActivity : AppCompatActivity() {
                 }
                 getString(R.string.search_mode_word) -> {
                     //Validity
-                    if(listAllMatches("^$search$".toRegex(RegexOption.IGNORE_CASE), dictionarySelectedArray).isNotEmpty()){
+                    if(search.uppercase() in dictionarySelectedSet){
                         binding.resultTitle.setTextAppearance(R.style.result_title_green)
                         binding.resultTitle.text = getString(R.string.result_title_valid, search)
-                        binding.resultContent.text = getDefinitions(search.toString(), definitionsFile, this@MainActivity)
+                        binding.resultContent.text = getDefinitions(search, definitionsFile, this@MainActivity)
                     }else{
                         binding.resultTitle.setTextAppearance(R.style.result_title_red)
                         binding.resultTitle.text = getString(R.string.result_title_invalid, search)
@@ -233,10 +212,10 @@ class MainActivity : AppCompatActivity() {
                 }
                 getString(R.string.search_mode_list) -> {
                     //RegEx filter
-                    val wordList = listAllMatches("$search".toRegex(RegexOption.IGNORE_CASE), dictionarySelectedArray)
+                    val wordList = listAllMatches(search.toRegex(RegexOption.IGNORE_CASE), dictionarySelectedArray)
                     val wordCount = applyThousandSeparator(wordList.size)
                     val string1 = getString(R.string.result_title_list, wordCount) + " "
-                    val string2 = "$search"
+                    val string2 = search
                     binding.resultTitle.setTextAppearance(R.style.result_title)
                     val spannable = SpannableStringBuilder()
                     spannable.append(string1)
