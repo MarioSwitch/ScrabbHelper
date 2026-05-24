@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name" translatable="false">ScrabbHelper</string>
     <string name="app_dev" translatable="false">Alexis Druon</string>
-    <string name="app_ver" translatable="false">v1.3.0</string>
+    <string name="app_ver" translatable="false">v1.3.1</string>
     <string name="dictionary">Dictionary:</string>
-    <string name="dictionary_words">(%1$s words)</string>
+    <string name="dictionary_words">%1$s words</string>
     <string name="loading_title">Loading…</string>
     <string name="loading_content">Please wait while %1$s loads dictionary and definitions…</string>
     <string name="thousand_separator">,</string>
@@ -19,7 +19,7 @@
     <string name="result_title_valid">\"%1$s\" is a valid word.</string>
     <string name="result_title_invalid">\"%1$s\" is NOT a valid word.</string>
     <string name="result_title_list">%1$s words match the filter:</string>
-    <string name="result_title_anagrams">%1$s anagrams found with letters: %2$s</string>
+    <string name="result_title_anagrams">%1$s anagrams found with letters:</string>
     <string name="result_content_anagrams">%1$d-letter words (%2$s):</string>
     <string name="result_content_anagrams_perfect">Perfect anagrams (%1$d letters) (%2$s):</string>
     <string name="result_definitions_credits_en">Definitions dumped from English Wiktionary, under CC BY-SA 4.0 license, on 24–26 November 2025.</string>

@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         //Applies thousand separators
-        fun applyThousandSeparator(value:Int):String{
+        fun applyThousandSeparator(value: Int): String {
             val formatter = DecimalFormat("#,##0")
             formatter.decimalFormatSymbols = formatter.decimalFormatSymbols.apply { groupingSeparator = this@MainActivity.getString(R.string.thousand_separator).toCharArray()[0] }
             return formatter.format(value)
@@ -51,6 +51,15 @@ class MainActivity : AppCompatActivity() {
 
         //Remove accents for redirects
         fun String.removeAccents() = Normalizer.normalize(this, Normalizer.Form.NFD).replace("\\p{M}".toRegex(), "")
+
+        //Format a string with the first part as standard font and the second part as monospace font
+        fun buildMonospaceSpannable(str1: String, str2: String): CharSequence{
+            val spannable = SpannableStringBuilder()
+            spannable.append(str1)
+            spannable.append(str2)
+            spannable.setSpan(TypefaceSpan("monospace"), str1.length, str1.length+str2.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            return spannable
+        }
 
         //Get definitions of a word
         fun getDefinitions(word: String, definitionsPath: String, context: Context, redirect: Boolean = false): String {
@@ -116,7 +125,7 @@ class MainActivity : AppCompatActivity() {
                     else -> "ods9.txt"
                 }
 
-                binding.dictionaryWords.text = ""
+                binding.dictionaryWords.text = getString(R.string.loading_title)
                 binding.resultTitle.setTextAppearance(R.style.result_title)
                 binding.resultTitle.text = getString(R.string.loading_title)
                 binding.resultContent.text = getString(R.string.loading_content, getString(R.string.app_name))
@@ -214,14 +223,8 @@ class MainActivity : AppCompatActivity() {
                     //RegEx filter
                     val wordList = listAllMatches(search.toRegex(RegexOption.IGNORE_CASE), dictionarySelectedArray)
                     val wordCount = applyThousandSeparator(wordList.size)
-                    val string1 = getString(R.string.result_title_list, wordCount) + " "
-                    val string2 = search
                     binding.resultTitle.setTextAppearance(R.style.result_title)
-                    val spannable = SpannableStringBuilder()
-                    spannable.append(string1)
-                    spannable.append(string2)
-                    spannable.setSpan(TypefaceSpan("monospace"), string1.length, string1.length+string2.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                    binding.resultTitle.text = spannable
+                    binding.resultTitle.text = buildMonospaceSpannable(getString(R.string.result_title_list, wordCount) + " ", search)
                     if(wordList.size<=maxResults){
                         binding.resultContent.text = wordList.joinToString(", ")
                     }
@@ -291,7 +294,7 @@ class MainActivity : AppCompatActivity() {
                     }
                     val wordCount = applyThousandSeparator(wordList.size)
                     binding.resultTitle.setTextAppearance(R.style.result_title)
-                    binding.resultTitle.text = getString(R.string.result_title_anagrams, wordCount, search)
+                    binding.resultTitle.text = buildMonospaceSpannable(getString(R.string.result_title_anagrams, wordCount) + " ", search)
                     var resultText = ""
                     var anagramsDisplayed = 0
                     for(i in search.length downTo 2){

@@ -1,6 +1,6 @@
 <resources>
     <string name="dictionary">Dictionnaire :</string>
-    <string name="dictionary_words">(%1$s mots)</string>
+    <string name="dictionary_words">%1$s mots</string>
     <string name="loading_title">Chargement…</string>
     <string name="loading_content">Veuillez patienter pendant que %1$s charge le dictionnaire et les définitions…</string>
     <string name="thousand_separator"> </string>
@@ -16,7 +16,7 @@
     <string name="result_title_valid">Le mot \"%1$s\" est valide.</string>
     <string name="result_title_invalid">Le mot \"%1$s\" n\'est PAS valide.</string>
     <string name="result_title_list">%1$s mots correspondent au filtre :</string>
-    <string name="result_title_anagrams">%1$s anagrammes trouvées avec les lettres : %2$s</string>
+    <string name="result_title_anagrams">%1$s anagrammes trouvées avec les lettres :</string>
     <string name="result_content_anagrams">Mots de %1$d lettres (%2$s) :</string>
     <string name="result_content_anagrams_perfect">Anagrammes parfaites (%1$d lettres) (%2$s) :</string>
     <string name="result_definitions_credits_en">Définitions récupérées depuis le Wiktionnaire anglais, sous licence CC BY-SA 4.0, du 24 au 26 novembre 2025.</string>
